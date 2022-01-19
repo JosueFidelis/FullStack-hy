@@ -1,68 +1,67 @@
+import { useState } from 'react';
+
 function Header(props) {
   return (
     <>
-      <h1>{props.course}</h1>
+      <h2>{props.title}</h2>
+      <br />
     </>
   );
 }
 
-function Part(props) {
-  console.log(props);
+function FeedbackButtons(props) {
   return (
     <>
-      <p>
-        {props.part.name} {props.part.exercises}
-      </p>
+      <button onClick={props.goodFeedback}>Good</button>
+      <button onClick={props.neutralFeedback}>Neutral</button>
+      <button onClick={props.badFeedback}>Bad</button>
+      <br />
     </>
   );
 }
 
-function Content(props) {
+function Feedbacks(props) {
   return (
     <>
-      <Part part={props.parts[0]}></Part>
-      <Part part={props.parts[1]}></Part>
-      <Part part={props.parts[2]}></Part>
-    </>
-  );
-}
-
-function Total({ parts }) {
-  return (
-    <>
-      <p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
+      <p>Good {props.goodFeedbacks}</p>
+      <p>Neutral {props.neutralFeedbacks}</p>
+      <p>Bad {props.badFeedbacks}</p>
     </>
   );
 }
 
 
 function App() {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
-  }
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
+  const giveGoodFeedback = () => 
+    setGood(good + 1);
+
+  const giveNeutralFeedback = () => 
+    setNeutral(neutral + 1);
+
+  const giveBadFeedback = () => 
+    setBad(bad + 1);
+
+  
   return (
     <>
-      <Header course={course.name}></Header>
-      <Content parts={course.parts}></Content>
-      <Total parts={course.parts}
-        ></Total>
+      <Header title="Give feedback"/>
+      <FeedbackButtons 
+        goodFeedback={giveGoodFeedback} 
+        neutralFeedback={giveNeutralFeedback}
+        badFeedback={giveBadFeedback}
+      />
+      <Header title="statistics"/>
+      <Feedbacks 
+        goodFeedbacks={good}
+        neutralFeedbacks={neutral}
+        badFeedbacks={bad}
+      />
     </>
-  )
+  );
 }
 
 export default App;
