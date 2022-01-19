@@ -16,9 +16,9 @@ function Button({ reaction, text }) {
 function Buttons(props) {
   return (
     <>
-      <Button reaction={props.goodFeedback} text="Good" />
-      <Button reaction={props.neutralFeedback} text="Neutral" />
-      <Button reaction={props.badFeedback} text="Bad" />
+      <Button reaction={props.goodFeedback} text />
+      <button onClick={props.neutralFeedback}>Neutral</button>
+      <button onClick={props.badFeedback}>Bad</button>
       <br />
     </>
   );
@@ -26,10 +26,9 @@ function Buttons(props) {
 
 function StatisticLine(props) {
   return (
-    <tr>
-      <td>{props.text}</td>
-      <td>{props.value}</td>
-    </tr>
+    <>
+      <p>{props.text} {props.value}</p>
+    </>
   );
 }
 
@@ -39,16 +38,14 @@ function Statistics({ goodFeedbacks, neutralFeedbacks, badFeedbacks }) {
     return <p>No feedback given</p>
   }
   return (
-    <table>
-      <tbody>
-        <StatisticLine text="Good" value={goodFeedbacks}/>
-        <StatisticLine text="Neutral" value={neutralFeedbacks}/>
-        <StatisticLine text="Bad" value={badFeedbacks}/>
-        <StatisticLine text="All" value={allFeedbacks}/>
-        <StatisticLine text="Average" value={(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}/>
-        <StatisticLine text="positive" value={(goodFeedbacks*100/allFeedbacks).toString() + '%'}/>
-      </tbody>
-    </table>
+    <>
+      <StatisticLine text="Good" value={goodFeedbacks}/>
+      <StatisticLine text="Neutral" value={neutralFeedbacks}/>
+      <StatisticLine text="Bad" value={badFeedbacks}/>
+      <StatisticLine text="All" value={allFeedbacks}/>
+      <StatisticLine text="Average" value={(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}/>
+      <StatisticLine text="positive" value={(goodFeedbacks*100/allFeedbacks).toString() + '%'}/>
+    </>
   );
 }
 
