@@ -9,30 +9,42 @@ function Header(props) {
   );
 }
 
-function FeedbackButtons(props) {
+function Button({ reaction, text }) {
+  return <button onClick={reaction}>{text}</button>
+}
+
+function Buttons(props) {
   return (
     <>
-      <button onClick={props.goodFeedback}>Good</button>
-      <button onClick={props.neutralFeedback}>Neutral</button>
-      <button onClick={props.badFeedback}>Bad</button>
+      <Button reaction={props.goodFeedback} text="Good" />
+      <Button reaction={props.neutralFeedback} text="Neutral" />
+      <Button reaction={props.badFeedback} text="Bad" />
       <br />
     </>
   );
 }
 
-function Feedbacks({ goodFeedbacks, neutralFeedbacks, badFeedbacks }) {
+function StatisticLine(props) {
+  return (
+    <>
+      <p>{props.text} {props.value}</p>
+    </>
+  );
+}
+
+function Statistics({ goodFeedbacks, neutralFeedbacks, badFeedbacks }) {
   let allFeedbacks = badFeedbacks + neutralFeedbacks + goodFeedbacks;
   if (allFeedbacks === 0) {
     return <p>No feedback given</p>
   }
   return (
     <>
-      <p>Good {goodFeedbacks}</p>
-      <p>Neutral {neutralFeedbacks}</p>
-      <p>Bad {badFeedbacks}</p>
-      <p>All {allFeedbacks}</p>
-      <p>Average {(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}</p>
-      <p>positive {goodFeedbacks*100/allFeedbacks}%</p>
+      <StatisticLine text="Good" value={goodFeedbacks}/>
+      <StatisticLine text="Neutral" value={neutralFeedbacks}/>
+      <StatisticLine text="Bad" value={badFeedbacks}/>
+      <StatisticLine text="All" value={allFeedbacks}/>
+      <StatisticLine text="Average" value={(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}/>
+      <StatisticLine text="positive" value={(goodFeedbacks*100/allFeedbacks).toString() + '%'}/>
     </>
   );
 }
@@ -56,13 +68,13 @@ function App() {
   return (
     <>
       <Header title="Give feedback"/>
-      <FeedbackButtons 
+      <Buttons 
         goodFeedback={giveGoodFeedback} 
         neutralFeedback={giveNeutralFeedback}
         badFeedback={giveBadFeedback}
       />
       <Header title="statistics"/>
-      <Feedbacks 
+      <Statistics 
         goodFeedbacks={good}
         neutralFeedbacks={neutral}
         badFeedbacks={bad}
