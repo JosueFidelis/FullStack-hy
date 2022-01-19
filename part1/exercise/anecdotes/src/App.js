@@ -1,5 +1,23 @@
 import { useState } from 'react';
 
+function Header(props) {
+  return (
+    <>
+      <h2>{props.title}</h2>
+      <br />
+    </>
+  );
+}
+
+function Buttons(props) {
+  return (
+    <>
+      <button onClick={props.voteCallBack}>vote</button>
+      <button onClick={props.randomAnecdoteCallBack}>next anecdote</button>
+    </>
+  );
+}
+
 function App() {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -13,25 +31,40 @@ function App() {
    
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Uint8Array(anecdotes.length));
+  const [mostVotedAnecdote, setMostVotedAnecdote] = useState({'anecdote': anecdotes[0], 'votes': 0});
 
   const selectRandomAnecdote = () => {
     let nextAnecdoteNumber = Math.floor(Math.random() * anecdotes.length);
     setSelected(nextAnecdoteNumber);
   };
 
+  const updateMostVotedAnecdote = () => {
+    if (mostVotedAnecdote.votes >= votes[selected]) 
+      return;
+    
+    const mostVotedAnecdoteCopy = {...mostVotedAnecdote}
+
+    mostVotedAnecdoteCopy.anecdote = anecdotes[selected];
+    mostVotedAnecdoteCopy.votes = votes[selected];
+    setMostVotedAnecdote(mostVotedAnecdoteCopy);
+  }
+
   const vote = () => {
     const votesCopy = [...votes];
     votesCopy[selected]++;
     setVotes(votesCopy);
+    updateMostVotedAnecdote(votesCopy[selected]);
   };
 
   return (
-    <div>
+    <>
+      <Header title="Anecdote of the day"/>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
-      <button onClick={vote}>vote</button>
-      <button onClick={selectRandomAnecdote}>next anecdote</button>
-    </div>
+      <Buttons voteCallBack={vote} randomAnecdoteCallBack={selectRandomAnecdote}/>
+      <Header title="Anecdote with most votes"/>
+      <p>{mostVotedAnecdote.anecdote}</p>
+    </>
   );
 }
 
