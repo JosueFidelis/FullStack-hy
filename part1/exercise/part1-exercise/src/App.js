@@ -20,12 +20,16 @@ function FeedbackButtons(props) {
   );
 }
 
-function Feedbacks(props) {
+function Feedbacks({ goodFeedbacks, neutralFeedbacks, badFeedbacks }) {
+  let allFeedbacks = badFeedbacks + neutralFeedbacks + goodFeedbacks;
   return (
     <>
-      <p>Good {props.goodFeedbacks}</p>
-      <p>Neutral {props.neutralFeedbacks}</p>
-      <p>Bad {props.badFeedbacks}</p>
+      <p>Good {goodFeedbacks}</p>
+      <p>Neutral {neutralFeedbacks}</p>
+      <p>Bad {badFeedbacks}</p>
+      <p>All {allFeedbacks}</p>
+      <p>Average {(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}</p>
+      <p>positive {goodFeedbacks*100/allFeedbacks}%</p>
     </>
   );
 }
