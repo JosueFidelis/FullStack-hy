@@ -22,6 +22,9 @@ function FeedbackButtons(props) {
 
 function Feedbacks({ goodFeedbacks, neutralFeedbacks, badFeedbacks }) {
   let allFeedbacks = badFeedbacks + neutralFeedbacks + goodFeedbacks;
+  if (allFeedbacks === 0) {
+    return <p>No feedback given</p>
+  }
   return (
     <>
       <p>Good {goodFeedbacks}</p>
