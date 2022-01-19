@@ -26,9 +26,10 @@ function Buttons(props) {
 
 function StatisticLine(props) {
   return (
-    <>
-      <p>{props.text} {props.value}</p>
-    </>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
   );
 }
 
@@ -38,14 +39,16 @@ function Statistics({ goodFeedbacks, neutralFeedbacks, badFeedbacks }) {
     return <p>No feedback given</p>
   }
   return (
-    <>
-      <StatisticLine text="Good" value={goodFeedbacks}/>
-      <StatisticLine text="Neutral" value={neutralFeedbacks}/>
-      <StatisticLine text="Bad" value={badFeedbacks}/>
-      <StatisticLine text="All" value={allFeedbacks}/>
-      <StatisticLine text="Average" value={(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}/>
-      <StatisticLine text="positive" value={(goodFeedbacks*100/allFeedbacks).toString() + '%'}/>
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text="Good" value={goodFeedbacks}/>
+        <StatisticLine text="Neutral" value={neutralFeedbacks}/>
+        <StatisticLine text="Bad" value={badFeedbacks}/>
+        <StatisticLine text="All" value={allFeedbacks}/>
+        <StatisticLine text="Average" value={(badFeedbacks*-1 + goodFeedbacks)/allFeedbacks}/>
+        <StatisticLine text="positive" value={(goodFeedbacks*100/allFeedbacks).toString() + '%'}/>
+      </tbody>
+    </table>
   );
 }
 
