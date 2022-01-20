@@ -17,12 +17,10 @@ function Part(props) {
   );
 }
 
-function Content(props) {
+function Content({ parts }) {
   return (
     <>
-      <Part part={props.parts[0]}></Part>
-      <Part part={props.parts[1]}></Part>
-      <Part part={props.parts[2]}></Part>
+      {parts.map(part => <Part part={part}></Part>)}
     </>
   );
 }
@@ -35,9 +33,19 @@ function Total({ parts }) {
   );
 }
 
+function Course({ course }) {
+  return (
+    <>
+      <Header course={course.name}></Header>
+      <Content parts={course.parts}></Content>
+    </>
+  );
+}
+
 
 function App() {
   const course = {
+    id: 1,
     name: 'Half Stack application development',
     parts: [
       {
@@ -57,12 +65,9 @@ function App() {
 
   return (
     <>
-      <Header course={course.name}></Header>
-      <Content parts={course.parts}></Content>
-      <Total parts={course.parts}
-        ></Total>
+      <Course course={course}/>
     </>
-  )
+  );
 }
 
 export default App;
