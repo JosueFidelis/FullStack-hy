@@ -25,9 +25,10 @@ function Content({ parts }) {
 }
 
 function Total({ parts }) {
+  let sumOfExercises = parts.reduce((a, b) => a + b.exercises, 0);
   return (
     <>
-      <p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
+      <strong>Number of exercises {sumOfExercises}</strong>
     </>
   );
 }
@@ -38,7 +39,7 @@ function Course({ course }) {
       <Header course={course.name}></Header>
       <Content parts={course.parts}></Content>
       <Total parts={course.parts}
-        ></Total>
+      ></Total>
     </>
   );
 }
