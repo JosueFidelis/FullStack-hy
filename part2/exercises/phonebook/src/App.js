@@ -1,4 +1,42 @@
-import { useState } from 'react'
+import { useState } from 'react';
+
+const Filter = ({ searchName, newSearchNameCallback }) => {
+  return (
+    <>
+      <div>filter shown with <input value={searchName} onChange={newSearchNameCallback} /></div>
+    </>
+  );
+};
+
+const PersonForm = (props) => {
+  return (
+    <>
+        <form>
+          <div>
+            name: <input value={props.newName} onChange={props.newNameCallback}/><br />
+            number: <input value={props.newNumber} onChange={props.newNumberCallback}/>
+          </div>
+          <div>
+            <button type="submit" onClick={props.addNumberCallback}>add</button>
+          </div>
+        </form>
+    </>
+  );
+};
+
+const Persons = ({ persons, searchName }) => {
+  const personsToShow = (searchName === '') 
+    ? persons
+    : persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()));
+
+  return (
+    <>
+      <ul>
+        {personsToShow.map(person => <li key={person.name}>{person.name}  {person.number}</li> )}
+      </ul>
+    </>
+  );
+};
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -23,11 +61,6 @@ const App = () => {
     setSearchName(event.target.value);
   };
 
-  const personsToShow = (searchName === '') 
-    ? persons
-    : persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()));
-
-
   const addNumber = (event) => {
     event.preventDefault();
     if (persons.some(person => person.name === newName)) {
@@ -42,23 +75,19 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <div>filter shown with <input value={searchName} onChange={handleNewSearchName} /></div>
+      <Filter searchName={searchName} newSearchNameCallback={handleNewSearchName}/>
       <h2>Add a new</h2>
-      <form>
-        <div>
-          name: <input value={newName} onChange={handleNewName}/><br />
-          number: <input value={newNumber} onChange={handleNewNumber}/>
-        </div>
-        <div>
-          <button type="submit" onClick={addNumber}>add</button>
-        </div>
-      </form>
+      <PersonForm 
+        newName={newName}
+        newNameCallback={handleNewName} 
+        newNumber={newNumber} 
+        newNumberCallback={handleNewNumber} 
+        addNumberCallback={addNumber}
+      />
       <h2>Numbers</h2>
-      <ul>
-        {personsToShow.map(person => <li key={person.name}>{person.name}  {person.number}</li> )}
-      </ul>
+      <Persons persons={persons} searchName={searchName} />
     </>
   )
-}
+};
 
 export default App
