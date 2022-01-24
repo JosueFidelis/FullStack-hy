@@ -19,7 +19,19 @@ function Country({ countryInfo }) {
   );
 }
 
-function Countries({ countriesList }) {
+function CountryListItem({ officialName, commonName, countrySelectionCallback }) {
+  return (
+    <>
+      <li>{commonName}</li>
+      <button
+       value={officialName}
+       onClick={countrySelectionCallback}
+      >show</button>
+    </>
+  );
+}
+
+function Countries({ countriesList, countrySelectionCallback }) {
   if (countriesList.length === 0)
     return <></>
 
@@ -33,7 +45,12 @@ function Countries({ countriesList }) {
   return (
     <>
       <ul>
-        {countriesList.map(country => <li key={country.name.official}>{country.name.common}</li>)}
+        {countriesList.map(country =>
+          <CountryListItem key={country.name.official} 
+            officialName={country.name.official} 
+            commonName={country.name.common}
+            countrySelectionCallback={countrySelectionCallback}
+          />)}
       </ul>
     </>
   );
@@ -58,11 +75,15 @@ function App() {
     setSearchName(event.target.value);
   };
 
+  const handleSelectCountry = (event) => {
+    setSearchName(event.target.value);
+  }
+
   return (
     <>
       <span>find countries </span>
       <input value={searchName} onChange={handleSearch} />
-      <Countries countriesList={countriesList}/>
+      <Countries countriesList={countriesList} countrySelectionCallback={handleSelectCountry}/>
     </>
   );
 }
