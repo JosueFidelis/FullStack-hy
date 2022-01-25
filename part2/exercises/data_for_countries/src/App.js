@@ -56,6 +56,43 @@ function Countries({ countriesList, countrySelectionCallback }) {
   );
 }
 
+function Weather({ countriesList }) {
+  const capital = countriesList[0].capital[0];
+  const [weatherReport, setWeatherReport] = useState({});
+
+  useEffect(() => {
+    const api_key = process.env.REACT_APP_API_KEY;
+    axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${api_key}`)
+      .then(response => {
+        setWeatherReport(response.data);
+      });
+  }, [capital]);
+  console.log(weatherReport);
+
+  if (Object.keys(weatherReport).length === 0) 
+    return <></>;
+  
+  return (
+    <>
+      <h2>Weather in {capital}</h2>
+      <p>
+        <strong>temperature: </strong>
+        {+(weatherReport.main.temp - 273.15).toFixed(2)} Celcius
+      </p>
+      <p>
+        <strong>sky status: </strong>
+        {weatherReport.weather[0].description}
+      </p>
+      <p>
+        <strong>wind: </strong>
+        {weatherReport.wind.speed} m/s
+      </p>
+    </>
+  );
+
+}
+
 function App() {
   const [searchName, setSearchName] = useState('');
   const [countriesList, setCountriesList] = useState([]);
@@ -66,7 +103,6 @@ function App() {
     axios
       .get(`https://restcountries.com/v3.1/name/${searchName}`)
       .then(response => {
-        console.log(response.data);
         setCountriesList(response.data);
       });
   }, [searchName]);
@@ -84,6 +120,7 @@ function App() {
       <span>find countries </span>
       <input value={searchName} onChange={handleSearch} />
       <Countries countriesList={countriesList} countrySelectionCallback={handleSelectCountry}/>
+      {(countriesList.length === 1) ? <Weather countriesList={countriesList}/> : <></>}
     </>
   );
 }
