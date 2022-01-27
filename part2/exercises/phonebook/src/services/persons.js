@@ -11,6 +11,10 @@ const personsService = {
     return axios
       .post(baseUrl, personObject)
       .then((response) => response.data);
+  },
+  deletePerson(id) {
+    return axios
+      .delete(`${baseUrl}/${id}`);
   }
 }
 

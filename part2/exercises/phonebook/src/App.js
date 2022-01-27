@@ -25,7 +25,16 @@ const PersonForm = (props) => {
   );
 };
 
-const Persons = ({ persons, searchName }) => {
+const Person = ({ person, deletePerson}) => {
+  return (
+     <>
+      <li>{person.name}  {person.number}</li>
+      <button onClick={() => deletePerson(person)}>delete</button>
+     </>
+  );
+};
+
+const Persons = ({ persons, searchName, handleDelete }) => {
   const personsToShow = (searchName === '') 
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()));
@@ -33,7 +42,7 @@ const Persons = ({ persons, searchName }) => {
   return (
     <>
       <ul>
-        {personsToShow.map(person => <li key={person.name}>{person.name}  {person.number}</li> )}
+        {personsToShow.map(person => <Person key={person.name} person={person} deletePerson={handleDelete}/>)}
       </ul>
     </>
   );
@@ -65,6 +74,17 @@ const App = () => {
     setSearchName(event.target.value);
   };
 
+  const handleDelete = (personToDelete) => {
+    if (!window.confirm(`Delete ${personToDelete.name}?`))
+      return;
+
+    personsService
+      .deletePerson(personToDelete.id)
+      .then(() => {
+        setPersons(persons.filter((person) => person.id !== personToDelete.id));
+      });
+  };
+
   const addNumber = (event) => {
     event.preventDefault();
     if (persons.some(person => person.name === newName)) {
@@ -92,7 +112,7 @@ const App = () => {
         addNumberCallback={addNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} searchName={searchName} />
+      <Persons persons={persons} searchName={searchName} handleDelete={handleDelete}/>
     </>
   )
 };
